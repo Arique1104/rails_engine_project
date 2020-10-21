@@ -9,6 +9,7 @@ require 'CSV'
 Merchant.destroy_all
 Customer.destroy_all
 Item.destroy_all
+Invoice.destroy_all
 
 CSV.foreach(Rails.root.join('db/data/merchants.csv'), headers: true) do |row|
   # row["name"] = row["name"].to_i
@@ -23,4 +24,9 @@ CSV.foreach(Rails.root.join('db/data/items.csv'), headers: true) do |row|
   hashed_row = row.to_h
   unit_price = (hashed_row["unit_price"].to_i / 100).to_f.round(2)
   Item.create!(name: hashed_row["name"], description: hashed_row["description"], unit_price: unit_price, merchant_id: hashed_row["merchant_id"])
+end
+
+CSV.foreach(Rails.root.join('db/data/invoices.csv'), headers:true) do |row|
+  hashed_row = row.to_h
+  Invoice.create!(status: hashed_row["status"], customer_id: hashed_row["customer_id"], merchant_id: hashed_row["merchant_id"])
 end
