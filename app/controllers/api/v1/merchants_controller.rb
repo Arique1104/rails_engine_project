@@ -20,6 +20,12 @@ class Api::V1::MerchantsController < ApplicationController
     render json: {}, status: :no_content
   end
 
+  def update
+    merchant = Merchant.find_by(id: update_params[:id])
+    merchant.update(name: update_params[:name])
+    render json: MerchantSerializer.new(merchant)
+  end
+
 private
   def merchant_params
     params.permit(:name)
@@ -27,5 +33,9 @@ private
 
   def destroy_params
     params.permit(:id)
+  end
+
+  def update_params
+    params.permit(:id, :name)
   end
 end

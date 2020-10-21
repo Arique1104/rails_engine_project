@@ -44,8 +44,7 @@ describe "Merchants API" do
     name = "Addams Family Orchard"
 
     post "/api/v1/merchants", :params => { name: "Addams Family Orchard"}
-#maybe useful for items?!
-    # post "/api/v1/merchants", :params => {:merchant => { name: "Addams Family Orchard"}}
+
     json = JSON.parse(response.body, symbolize_names: true)
     new_merchant = json[:data]
     expect(new_merchant[:attributes][:name]).to eq(name)
@@ -59,14 +58,19 @@ describe "Merchants API" do
     delete "/api/v1/merchants/#{new_merchant.id}", :params => {name: "#{new_merchant.name}"}
 
     expect(Merchant.find_by(:id => new_merchant.id)).to be_nil
-    #
-    # get '/api/v1/merchants'
-    # expect(response).to be_successful
-    # expect(response).to have_http_status(:created)
-    # merchants = JSON.parse(response.body, symbolize_names: true)[:data]
-    #
-    # require "pry"; binding.pry
-    # expect(merchants.count).to eq(1)
 
+  end
+
+  it 'updates a merchant' do
+    merchant = Merchant.create!(name: "Addams Family Orchard")
+    expect(merchant.name).to eq("Addams Family Orchard")
+
+    new_name = "Ortiz Family Orchard"
+
+    patch "/api/v1/merchants/#{merchant.id}", :params => {name: new_name}
+
+    merchant.reload
+
+    expect(merchant.name).to eq(new_name)
   end
 end
