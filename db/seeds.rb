@@ -8,12 +8,19 @@ require 'CSV'
 #   Character.create(name: 'Luke', movie: movies.first)
 Merchant.destroy_all
 Customer.destroy_all
+Item.destroy_all
 
 CSV.foreach(Rails.root.join('db/data/merchants.csv'), headers: true) do |row|
   # row["name"] = row["name"].to_i
-  Merchant.create(row.to_h)
+  Merchant.create!(row.to_h)
 end
 
 CSV.foreach(Rails.root.join('db/data/customers.csv'), headers: true) do |row|
-  Customer.create(row.to_h)
+  Customer.create!(row.to_h)
+end
+
+CSV.foreach(Rails.root.join('db/data/items.csv'), headers: true) do |row|
+  hashed_row = row.to_h
+  unit_price = (hashed_row["unit_price"].to_i / 100).to_f.round(2)
+  Item.create!(name: hashed_row["name"], description: hashed_row["description"], unit_price: unit_price, merchant_id: hashed_row["merchant_id"])
 end
