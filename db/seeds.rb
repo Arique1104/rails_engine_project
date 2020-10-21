@@ -13,20 +13,22 @@ Invoice.destroy_all
 
 CSV.foreach(Rails.root.join('db/data/merchants.csv'), headers: true) do |row|
   # row["name"] = row["name"].to_i
-  Merchant.create!(row.to_h)
+  hashed_row = row.to_h
+  Merchant.create!(name: hashed_row["name"], created_at: hashed_row["created_at"], updated_at: hashed_row["updated_at"])
 end
 
 CSV.foreach(Rails.root.join('db/data/customers.csv'), headers: true) do |row|
-  Customer.create!(row.to_h)
+  hashed_row = row.to_h
+  Customer.create!(first_name: hashed_row["first_name"], last_name: hashed_row["last_name"], created_at: hashed_row["created_at"], updated_at: hashed_row["updated_at"])
 end
 
 CSV.foreach(Rails.root.join('db/data/items.csv'), headers: true) do |row|
   hashed_row = row.to_h
   unit_price = (hashed_row["unit_price"].to_i / 100).to_f.round(2)
-  Item.create!(name: hashed_row["name"], description: hashed_row["description"], unit_price: unit_price, merchant_id: hashed_row["merchant_id"])
+  Item.create!(name: hashed_row["name"], description: hashed_row["description"], unit_price: unit_price, merchant_id: hashed_row["merchant_id"], created_at: hashed_row["created_at"], updated_at: hashed_row["updated_at"])
 end
 
 CSV.foreach(Rails.root.join('db/data/invoices.csv'), headers:true) do |row|
   hashed_row = row.to_h
-  Invoice.create!(status: hashed_row["status"], customer_id: hashed_row["customer_id"], merchant_id: hashed_row["merchant_id"])
+  Invoice.create!(status: hashed_row["status"], customer_id: hashed_row["customer_id"], merchant_id: hashed_row["merchant_id"], created_at: hashed_row["created_at"], updated_at: hashed_row["updated_at"])
 end
