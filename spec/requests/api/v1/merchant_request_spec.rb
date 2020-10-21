@@ -10,8 +10,7 @@ describe "Merchants API" do
 
     merchants.each do |merchant|
       expect(merchant).to have_key(:id)
-      expect(merchant[:id]).to be_an(String)
-
+      expect(merchant[:id]).to be_a(String)
       expect(merchant[:attributes]).to have_key(:name)
       expect(merchant[:attributes][:name]).to be_a(String)
 
