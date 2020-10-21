@@ -10,6 +10,7 @@ Merchant.destroy_all
 Customer.destroy_all
 Item.destroy_all
 Invoice.destroy_all
+Transaction.destroy_all
 
 CSV.foreach(Rails.root.join('db/data/merchants.csv'), headers: true) do |row|
   # row["name"] = row["name"].to_i
@@ -31,4 +32,9 @@ end
 CSV.foreach(Rails.root.join('db/data/invoices.csv'), headers:true) do |row|
   hashed_row = row.to_h
   Invoice.create!(status: hashed_row["status"], customer_id: hashed_row["customer_id"], merchant_id: hashed_row["merchant_id"], created_at: hashed_row["created_at"], updated_at: hashed_row["updated_at"])
+end
+
+CSV.foreach(Rails.root.join('db/data/transactions.csv'), headers: true) do |row|
+  hashed_row = row.to_h
+  Transaction.create!(credit_card_number: hashed_row["credit_card_number"], result: hashed_row["result"], created_at: hashed_row["created_at"], updated_at: hashed_row["updated_at"], invoice_id: hashed_row["invoice_id"])
 end
