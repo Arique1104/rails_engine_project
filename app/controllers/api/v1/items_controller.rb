@@ -1,9 +1,9 @@
 class Api::V1::ItemsController < ApplicationController
   def index
-    render json: ItemSerializer.new(Item.all)
+    test = render json: ItemSerializer.new(Item.all)
   end
   def show
-    render json: ItemSerializer.new(Item.find_by(item_params))
+    render json: ItemSerializer.new(Item.find(params[:id]))
   end
   def create
     ActiveRecord::Base.connection.reset_pk_sequence!('items')
@@ -12,9 +12,9 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def destroy
-    item = Item.find_by(item_params)
-    item.destroy
+    Item.destroy(params[:id])
     render json: {}, status: :no_content
+    # render body: nil, status: :no_content
   end
 
   def update

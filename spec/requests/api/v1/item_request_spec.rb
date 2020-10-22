@@ -103,9 +103,11 @@ describe "Items API" do
 
     item = Item.create!(body)
 
-    delete "/api/v1/items/#{item.id}", :params => body
-
-    expect(Item.find_by(:id => item.id)).to be_nil
+    expect{ delete "/api/v1/items/#{item.id}" }.to change(Item, :count).by(-1)
+    expect(response).to be_successful
+    expect(response.status).to eq(204)
+    expect(response.body).to be_empty
+    expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
   end
 
   it 'updates an item' do
