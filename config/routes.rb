@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       namespace :merchants do
-        # get '/find', to: 'merchants#find'
+        get '/find', to: 'search#find'
         get ':id/items', to: 'search#show'
       end
       resources :merchants
