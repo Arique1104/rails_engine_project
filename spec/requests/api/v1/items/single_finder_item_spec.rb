@@ -27,7 +27,7 @@ it 'can search by created_at' do
     expect(response).to be_successful
     json = JSON.parse(response.body, symbolize_names: true)
     item_b = json[:data]
-    expect(json[:data].first[:attributes][:name]).to eq(item_1.name)
+    expect(item_b[:attributes][:name]).to eq(item_1.name)
 end
 it 'can search by updated_at' do
         merchant_1 = Merchant.create!(name: "Lasondra's Art History Museum")
@@ -41,6 +41,6 @@ it 'can search by updated_at' do
     expect(response).to be_successful
     json = JSON.parse(response.body, symbolize_names: true)
     item_c = json[:data]
-    expect(json[:data].first[:attributes][:name]).to eq(item_1.name)
+    expect(item_c[:attributes][:name]).to eq(item_1.name)
   end
 end
