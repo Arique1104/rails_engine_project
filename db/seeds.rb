@@ -31,7 +31,8 @@ end
 
 CSV.foreach(Rails.root.join('db/data/items.csv'), headers: true) do |row|
   hashed_row = row.to_h
-  unit_price = (hashed_row["unit_price"].to_i / 100).to_f.round(2)
+  unit_price = (hashed_row["unit_price"].to_f / 100).round(2)
+
   Item.create!(name: hashed_row["name"],
                description: hashed_row["description"],
                unit_price: unit_price,

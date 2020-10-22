@@ -10,8 +10,7 @@ describe "Merchants API" do
 
     merchants.each do |merchant|
       expect(merchant).to have_key(:id)
-      expect(merchant[:id]).to be_an(String)
-
+      expect(merchant[:id]).to be_a(String)
       expect(merchant[:attributes]).to have_key(:name)
       expect(merchant[:attributes][:name]).to be_a(String)
 
@@ -44,7 +43,7 @@ describe "Merchants API" do
     name = "Addams Family Orchard"
 
     post "/api/v1/merchants", :params => { name: "Addams Family Orchard"}
-
+# require "pry"; binding.pry
     json = JSON.parse(response.body, symbolize_names: true)
     new_merchant = json[:data]
     expect(new_merchant[:attributes][:name]).to eq(name)
