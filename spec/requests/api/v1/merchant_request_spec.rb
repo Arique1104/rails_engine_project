@@ -43,7 +43,7 @@ describe "Merchants API" do
     name = "Addams Family Orchard"
 
     post "/api/v1/merchants", :params => { name: "Addams Family Orchard"}
-
+# require "pry"; binding.pry
     json = JSON.parse(response.body, symbolize_names: true)
     new_merchant = json[:data]
     expect(new_merchant[:attributes][:name]).to eq(name)
