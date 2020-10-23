@@ -8,8 +8,15 @@ class Api::V1::Merchants::SearchController < ApplicationController
   def find
     attribute = params.keys[0]
     query = params[attribute]
-    @merchant = format(attribute, query)
+    @merchant = format(attribute, query).first
     render json: MerchantSerializer.new(@merchant)
+  end
+
+  def find_all
+    attribute = params.keys[0]
+    query = params[attribute]
+    @merchants = format(attribute, query)
+    render json: MerchantSerializer.new(@merchants)
   end
 
   private
@@ -19,13 +26,13 @@ class Api::V1::Merchants::SearchController < ApplicationController
     elsif attribute == "updated_at"
       time_format(attribute, query)
     else
-      Merchant.where("lower(#{attribute}) LIKE lower(?)", "%#{query}%").first
+      Merchant.where("lower(#{attribute}) LIKE lower(?)", "%#{query}%")
     end
   end
 
   def time_format(attribute, query)
     time = Date.parse(query)
-    Merchant.where("#{attribute} > ?", "#{time.beginning_of_day}").first
+    Merchant.where("#{attribute} > ?", "#{time.beginning_of_day}")
   end
 
 end

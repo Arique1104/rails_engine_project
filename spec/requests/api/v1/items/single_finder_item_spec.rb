@@ -15,7 +15,7 @@ describe "Single Finder for item" do
     item_a = json[:data]
     expect(json[:data][:attributes][:name]).to eq(item_3.name)
 end
-it 'can search by created_at' do
+it 'can search single item by created_at' do
       merchant_1 = Merchant.create!(name: "Lasondra's Art History Museum")
         item_1 = merchant_1.items.create!(name: "Fries", description: "Deliciouso!", unit_price: 100.0, created_at: "Thu, 12 Oct 2013 13:47:38 UTC +00:00", updated_at: "Thu, 22 Oct 2014 13:47:38 UTC +00:00")
 
@@ -29,7 +29,7 @@ it 'can search by created_at' do
     item_b = json[:data]
     expect(item_b[:attributes][:name]).to eq(item_1.name)
 end
-it 'can search by updated_at' do
+it 'can search single item by updated_at' do
         merchant_1 = Merchant.create!(name: "Lasondra's Art History Museum")
           item_1 = merchant_1.items.create!(name: "Fries", description: "Deliciouso!", unit_price: 100.0, created_at: "Thu, 12 Oct 2013 13:47:38 UTC +00:00", updated_at: "Thu, 22 Oct 2014 13:47:38 UTC +00:00")
 
