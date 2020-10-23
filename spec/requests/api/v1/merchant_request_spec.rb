@@ -22,8 +22,8 @@ describe "Merchants API" do
     end
   end
   it 'shows a merchant' do
-    merchant = create_list(:merchant, 1)
-    get "/api/v1/merchants/#{merchant.first.id}"
+    merchant = create(:merchant)
+    get "/api/v1/merchants/#{merchant.id}"
     expect(response).to be_successful
     merchant = JSON.parse(response.body, symbolize_names: true)[:data]
     expect(merchant).to have_key(:id)
@@ -41,23 +41,33 @@ describe "Merchants API" do
 
   it 'creates a merchant' do
     name = "Addams Family Orchard"
+    post "/api/v1/merchants", :params => { name: "#{name}" }
 
-    post "/api/v1/merchants", :params => { name: "Addams Family Orchard"}
-# require "pry"; binding.pry
     json = JSON.parse(response.body, symbolize_names: true)
     new_merchant = json[:data]
     expect(new_merchant[:attributes][:name]).to eq(name)
   end
 
+  # it 'sends an error when not given the right information for merchant' do
+  #   name = "Addams Family Orchard"
+  #   get "/api/v1/merchants", :params => { name: "#{name}" }
+  #   # require "pry"; binding.pry
+  #   expect(response).to be_successful
+  #   json = JSON.parse(response.body, symbolize_names: true)
+  #   new_merchant = json[:data]
+  #   expect(new_merchant).to eq("status: 404")
+  # end
+
   it 'deletes a merchant' do
-    merchant_a = create_list(:merchant, 1)
+    merchant_a = create(:merchant)
 
     new_merchant = Merchant.create!(name: "Lasondra's Art History Center: Austin Park")
 
     delete "/api/v1/merchants/#{new_merchant.id}", :params => {name: "#{new_merchant.name}"}
 
     expect(Merchant.find_by(:id => new_merchant.id)).to be_nil
-
+    
+    expect{Merchant.find(new_merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
   end
 
   it 'updates a merchant' do
