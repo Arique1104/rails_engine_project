@@ -16,7 +16,6 @@ class Api::V1::MerchantsController < ApplicationController
 
   def destroy
     Merchant.destroy(params[:id])
-    render json: {}, status: :no_content
   end
 
   def update

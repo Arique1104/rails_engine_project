@@ -13,8 +13,6 @@ class Api::V1::ItemsController < ApplicationController
 
   def destroy
     Item.destroy(params[:id])
-    render json: {}, status: :no_content
-    # render body: nil, status: :no_content
   end
 
   def update
